@@ -46,7 +46,23 @@ color: #bbb
 </$reveal>
 \end
 
+\procedure color-picker-actions()
 \whitespace trim
+<$action-setfield $tiddler=<<currentTiddler>> color=<<colour-picker-value>>/>
+\end
+
+\procedure color-picker-button()
+\whitespace trim
+<div class="tc-drop-down-wrapper">
+<$button class="tc-btn-invisible" popup={{{ [[$:/state/tag-manager/color/]addsuffix<currentTiddler>] }}}>{{$:/core/images/palette}}</$button>
+<$reveal type="popup" tag="div" class="tc-drop-down tc-popup-keep" state={{{ [[$:/state/tag-manager/color/]addsuffix<currentTiddler>] }}}>
+<$transclude $variable="colour-picker" actions=<<color-picker-actions>>/>
+</$reveal>
+</div>
+\end
+
+\whitespace trim
+<div class="tc-table-wrapper">
 <table class="tc-tag-manager-table">
 <tbody>
 	<tr>
@@ -58,7 +74,7 @@ color: #bbb
 	</tr>
 	<$list filter="[tags[]!is[system]sort[title]]">
 		<tr>
-			<td><$edit-text field="color" tag="input" type="color"/></td>
+			<td><$transclude $variable="color-picker-button"/></td>
 			<td>{{||$:/core/ui/TagTemplate}}</td>
 			<td><$count filter="[all[current]tagging[]]"/></td>
 			<td>
@@ -101,3 +117,4 @@ color: #bbb
 	</tr>
 </tbody>
 </table>
+</div>
